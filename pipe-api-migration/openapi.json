@@ -1,0 +1,3726 @@
+{
+  "openapi": "3.1.0",
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "info": {
+    "title": "Pipe Solar API",
+    "version": "v1",
+    "description": "Every call sends a company key, made by an owner or admin in Settings \u2192 API Keys, as Authorization: Bearer psk_\u2026. Call from a server, never from a web page. Documentation: https://developers.pipe.solar"
+  },
+  "servers": [
+    {
+      "url": "https://staging-api.pipe.solar"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "companyKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "psk_ and 40 hex characters"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message",
+              "docs"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "enum": [
+                  "unauthorized",
+                  "forbidden",
+                  "not_open",
+                  "not_found",
+                  "invalid",
+                  "rate_limited",
+                  "internal",
+                  "unavailable"
+                ]
+              },
+              "message": {
+                "type": "string"
+              },
+              "docs": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Me": {
+        "type": "object",
+        "required": [
+          "key",
+          "company"
+        ],
+        "properties": {
+          "key": {
+            "type": "object",
+            "required": [
+              "name",
+              "prefix"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "prefix": {
+                "type": "string"
+              }
+            }
+          },
+          "company": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "ProjectRow": {
+        "type": "object",
+        "required": [
+          "id",
+          "reference",
+          "leadId",
+          "productLine",
+          "stage",
+          "soldAt",
+          "updatedAt",
+          "ntpGranted",
+          "customer",
+          "address"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "leadId": {
+            "type": "string"
+          },
+          "productLine": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "hi"
+            ]
+          },
+          "stage": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "enteredAt"
+            ],
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "enteredAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "soldAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "updatedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ntpGranted": {
+            "type": "boolean"
+          },
+          "customer": {
+            "type": "object",
+            "required": [
+              "firstName",
+              "lastName",
+              "email",
+              "phone"
+            ],
+            "properties": {
+              "firstName": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "lastName": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "email": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "phone": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "address": {
+            "type": "object",
+            "required": [
+              "line1",
+              "line2",
+              "city",
+              "state",
+              "postalCode",
+              "country"
+            ],
+            "properties": {
+              "line1": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "line2": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "city": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "state": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "postalCode": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "country": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "required": [
+          "id",
+          "reference",
+          "leadId",
+          "productLine",
+          "stage",
+          "soldAt",
+          "updatedAt",
+          "ntpGranted",
+          "customer",
+          "coBorrower",
+          "address",
+          "meterNumber",
+          "notes",
+          "source",
+          "partnerLeadId",
+          "utility",
+          "design",
+          "company",
+          "salesRep",
+          "setter",
+          "projectManager",
+          "siteSurveyor",
+          "subcontractor",
+          "contract",
+          "financing",
+          "system",
+          "products",
+          "milestones",
+          "customFields",
+          "files",
+          "links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "leadId": {
+            "type": "string"
+          },
+          "productLine": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "hi"
+            ]
+          },
+          "stage": {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "enteredAt"
+            ],
+            "properties": {
+              "id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "enteredAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "soldAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "updatedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "ntpGranted": {
+            "type": "boolean"
+          },
+          "customer": {
+            "type": "object",
+            "required": [
+              "firstName",
+              "lastName",
+              "email",
+              "phone"
+            ],
+            "properties": {
+              "firstName": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "lastName": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "email": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "phone": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "coBorrower": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "firstName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "lastName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "address": {
+            "type": "object",
+            "required": [
+              "line1",
+              "line2",
+              "city",
+              "state",
+              "postalCode",
+              "country"
+            ],
+            "properties": {
+              "line1": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "line2": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "city": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "state": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "postalCode": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "country": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "meterNumber": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": "object",
+            "required": [
+              "customer",
+              "project"
+            ],
+            "properties": {
+              "customer": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "project": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "source": {
+            "type": "object",
+            "required": [
+              "name",
+              "subSource"
+            ],
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "subSource": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "partnerLeadId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "utility": {
+            "type": "object",
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "design": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "scaniflyProjectId",
+                  "scaniflyDesignId",
+                  "soldScaniflyDesignId"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "scaniflyProjectId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "scaniflyDesignId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "soldScaniflyDesignId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "company": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "salesRep": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "setter": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "projectManager": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "siteSurveyor": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "subcontractor": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "contract": {
+            "type": "object",
+            "required": [
+              "signedAt",
+              "price",
+              "salesTax",
+              "priceBeforeTax",
+              "files"
+            ],
+            "properties": {
+              "signedAt": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "price": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "salesTax": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "priceBeforeTax": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "financing": {
+            "type": "object",
+            "required": [
+              "type",
+              "lender",
+              "amount",
+              "aprPercent",
+              "termMonths",
+              "monthlyPayment",
+              "dealerFeePercent",
+              "escalatorPercent"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "cash",
+                  "loan",
+                  "lease",
+                  "ppa"
+                ]
+              },
+              "lender": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "amount": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "aprPercent": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "termMonths": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "monthlyPayment": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "dealerFeePercent": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "escalatorPercent": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          },
+          "system": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "roofType",
+                  "sizeKw",
+                  "annualProductionKwh",
+                  "panels",
+                  "inverters",
+                  "batteries",
+                  "pricePerWatt",
+                  "adders"
+                ],
+                "properties": {
+                  "roofType": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "sizeKw": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "annualProductionKwh": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "panels": {
+                    "type": "object",
+                    "required": [
+                      "count",
+                      "manufacturer",
+                      "model"
+                    ],
+                    "properties": {
+                      "count": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "manufacturer": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "model": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "inverters": {
+                    "type": "object",
+                    "required": [
+                      "count",
+                      "manufacturer",
+                      "model",
+                      "name",
+                      "microinverter"
+                    ],
+                    "properties": {
+                      "count": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "manufacturer": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "model": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "name": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "microinverter": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "batteries": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "required": [
+                          "count",
+                          "manufacturer",
+                          "model",
+                          "capacityKwh"
+                        ],
+                        "properties": {
+                          "count": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "manufacturer": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "model": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "capacityKwh": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "pricePerWatt": {
+                    "type": "object",
+                    "required": [
+                      "base",
+                      "final"
+                    ],
+                    "properties": {
+                      "base": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "final": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "adders": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "quantity",
+                        "total"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "products": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "name",
+                    "price"
+                  ],
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "milestones": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "YYYY-MM-DD"
+            }
+          },
+          "customFields": {
+            "type": "object",
+            "description": "The company's own fields on the project (Settings \u2192 Company fields), by the field's name: text, a number, a YYYY-MM-DD date, a choice, or true and false. A field with no value is left out.",
+            "additionalProperties": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          },
+          "files": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "project",
+              "proposal"
+            ],
+            "properties": {
+              "project": {
+                "type": "string"
+              },
+              "proposal": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "StageMoved": {
+        "type": "object",
+        "required": [
+          "changed",
+          "stage",
+          "stageId"
+        ],
+        "properties": {
+          "changed": {
+            "type": "boolean"
+          },
+          "stage": {
+            "type": "string"
+          },
+          "stageId": {
+            "type": "string"
+          }
+        }
+      },
+      "Stage": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "productLine",
+          "position",
+          "kind"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "productLine": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "hi"
+            ]
+          },
+          "position": {
+            "type": "number"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "onHold",
+              "cancelled"
+            ]
+          }
+        }
+      },
+      "Changed": {
+        "type": "object",
+        "required": [
+          "changed"
+        ],
+        "properties": {
+          "changed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FilesAdded": {
+        "type": "object",
+        "required": [
+          "files"
+        ],
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "name",
+                "folder",
+                "added"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "folder": {
+                  "type": "string"
+                },
+                "added": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Lead": {
+        "type": "object",
+        "required": [
+          "id",
+          "reference",
+          "productLine",
+          "status",
+          "archived",
+          "createdAt",
+          "updatedAt",
+          "customer",
+          "coBorrower",
+          "address",
+          "utility",
+          "source",
+          "externalId",
+          "partnerLeadId",
+          "notes",
+          "salesRep",
+          "setter",
+          "project",
+          "design",
+          "proposal",
+          "links"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "productLine": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "hi"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "updatedAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "customer": {
+            "type": "object",
+            "required": [
+              "firstName",
+              "lastName",
+              "email",
+              "phone"
+            ],
+            "properties": {
+              "firstName": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "lastName": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "email": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "phone": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "coBorrower": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "firstName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "lastName": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "address": {
+            "type": "object",
+            "required": [
+              "line1",
+              "line2",
+              "city",
+              "state",
+              "postalCode",
+              "country"
+            ],
+            "properties": {
+              "line1": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "line2": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "city": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "state": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "postalCode": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "country": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "utility": {
+            "type": "object",
+            "required": [
+              "name",
+              "monthlyBill",
+              "meterNumber"
+            ],
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "monthlyBill": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "meterNumber": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "source": {
+            "type": "object",
+            "required": [
+              "name",
+              "subSource"
+            ],
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "subSource": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "externalId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "partnerLeadId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "salesRep": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "setter": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "phone"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "email": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "phone": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "project": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "id",
+                  "reference",
+                  "soldAt"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "reference": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "soldAt": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "design": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "name",
+                  "scaniflyProjectId",
+                  "scaniflyDesignId",
+                  "soldScaniflyDesignId"
+                ],
+                "properties": {
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "scaniflyProjectId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "scaniflyDesignId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "soldScaniflyDesignId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "proposal": {
+            "anyOf": [
+              {
+                "type": "object",
+                "required": [
+                  "id",
+                  "reference",
+                  "label",
+                  "status",
+                  "system",
+                  "price",
+                  "financing",
+                  "adders",
+                  "links"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "reference": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "system": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "required": [
+                          "sizeKw",
+                          "annualProductionKwh",
+                          "arrays",
+                          "panels",
+                          "inverters",
+                          "batteries",
+                          "pricePerWatt"
+                        ],
+                        "properties": {
+                          "sizeKw": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "annualProductionKwh": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "arrays": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "panels": {
+                            "type": "object",
+                            "required": [
+                              "count",
+                              "manufacturer",
+                              "model"
+                            ],
+                            "properties": {
+                              "count": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ]
+                              },
+                              "manufacturer": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "model": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            }
+                          },
+                          "inverters": {
+                            "type": "object",
+                            "required": [
+                              "count",
+                              "manufacturer",
+                              "model",
+                              "name",
+                              "microinverter"
+                            ],
+                            "properties": {
+                              "count": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ]
+                              },
+                              "manufacturer": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "model": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "microinverter": {
+                                "type": "boolean"
+                              }
+                            }
+                          },
+                          "batteries": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "count",
+                                  "manufacturer",
+                                  "model",
+                                  "capacityKwh"
+                                ],
+                                "properties": {
+                                  "count": {
+                                    "type": [
+                                      "number",
+                                      "null"
+                                    ]
+                                  },
+                                  "manufacturer": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
+                                  },
+                                  "model": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
+                                  },
+                                  "capacityKwh": {
+                                    "type": [
+                                      "number",
+                                      "null"
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "pricePerWatt": {
+                            "type": "object",
+                            "required": [
+                              "base",
+                              "final"
+                            ],
+                            "properties": {
+                              "base": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ]
+                              },
+                              "final": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "price": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "required": [
+                          "total",
+                          "salesTax",
+                          "beforeTax",
+                          "adders",
+                          "discounts",
+                          "incentives",
+                          "net"
+                        ],
+                        "properties": {
+                          "total": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "salesTax": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "beforeTax": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "adders": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "discounts": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "incentives": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "net": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "financing": {
+                    "type": "object",
+                    "required": [
+                      "type",
+                      "lender",
+                      "amount",
+                      "aprPercent",
+                      "termMonths",
+                      "monthlyPayment",
+                      "dealerFeePercent",
+                      "escalatorPercent"
+                    ],
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "cash",
+                          "loan",
+                          "lease",
+                          "ppa"
+                        ]
+                      },
+                      "lender": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "amount": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "aprPercent": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "termMonths": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "monthlyPayment": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "dealerFeePercent": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      },
+                      "escalatorPercent": {
+                        "type": [
+                          "number",
+                          "null"
+                        ]
+                      }
+                    }
+                  },
+                  "adders": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "quantity",
+                        "total"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "number"
+                        },
+                        "total": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "links": {
+                    "type": "object",
+                    "required": [
+                      "proposal"
+                    ],
+                    "properties": {
+                      "proposal": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "record",
+              "proposal"
+            ],
+            "properties": {
+              "record": {
+                "type": "string"
+              },
+              "proposal": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          },
+          "contractFiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "files": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "LeadCreated": {
+        "type": "object",
+        "required": [
+          "leadId",
+          "created",
+          "unassigned"
+        ],
+        "properties": {
+          "leadId": {
+            "type": "string"
+          },
+          "created": {
+            "type": "boolean"
+          },
+          "unassigned": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Activity": {
+        "type": "object",
+        "required": [
+          "id",
+          "reference",
+          "type",
+          "body",
+          "internal",
+          "customerFacing",
+          "replyTo",
+          "author",
+          "authorId",
+          "createdAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reference": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "type": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "internal": {
+            "type": "boolean"
+          },
+          "customerFacing": {
+            "type": "boolean"
+          },
+          "replyTo": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "author": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "authorId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "Adder": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "description",
+          "productLine",
+          "productKind",
+          "unit",
+          "unitPrice",
+          "tiered",
+          "repSponsored",
+          "showOnProposal",
+          "brand",
+          "model",
+          "warrantyYears"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "productLine": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "hi"
+            ]
+          },
+          "productKind": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "unit": {
+            "type": "string"
+          },
+          "unitPrice": {
+            "type": "number"
+          },
+          "tiered": {
+            "type": "boolean"
+          },
+          "repSponsored": {
+            "type": "boolean"
+          },
+          "showOnProposal": {
+            "type": "boolean"
+          },
+          "brand": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "model": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "warrantyYears": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      },
+      "Equipment": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "manufacturer",
+          "model"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "panel",
+              "inverter",
+              "battery"
+            ]
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "model": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "watts": {
+            "type": "number"
+          },
+          "default": {
+            "type": "boolean"
+          },
+          "ratedOutputWatts": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "efficiencyPercent": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "microinverter": {
+            "type": "boolean"
+          },
+          "capacityKwh": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "continuousOutputWatts": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "warrantyYears": {
+            "type": [
+              "number",
+              "null"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/v1/me": {
+      "get": {
+        "operationId": "getMe",
+        "summary": "Check a key",
+        "description": "Answers the key's name and the company it belongs to. Use it to prove a key works before you build on it.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The key works.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects": {
+      "get": {
+        "operationId": "listProjects",
+        "summary": "List projects",
+        "description": "Your company's projects, solar and HI, newest change first, a page at a time. Keep the newest `updatedAt` you read and send it as `updatedSince` next time to read only what changed. An installer's key lists every project it builds, its dealers' included.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`data` holds the page's projects, the core of each; `next` is the cursor for the next page, or null at the end.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "next"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ProjectRow"
+                      }
+                    },
+                    "next": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is not valid; the message says what to change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Rows in a page, 1 to 100. 50 when absent.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "The `next` of the page before, URL-encoded, with the same other fields. Absent for the first page.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedSince",
+            "in": "query",
+            "required": false,
+            "description": "Only rows changed after this time, ISO 8601 (2026-10-01T00:00:00Z).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productLine",
+            "in": "query",
+            "required": false,
+            "description": "`solar` or `hi`. Both when absent.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/projects/{id}": {
+      "get": {
+        "operationId": "getProject",
+        "summary": "Read a project",
+        "description": "One project in full: the customer, the people, the contract, the financing, the milestones and the files. A solar project carries `system` and an HI project `products`; `productLine` says which, and the other is null. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No record with this id is yours.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "`{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateProject",
+        "summary": "Set the install date and NTP",
+        "description": "Sets the install date (the project's \"Install Scheduled\" milestone, which also places it on the Calendar) and whether NTP is granted. An absent field is kept. Only the installer's key changes a project. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`changed` says whether anything changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Changed"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is not valid; the message says what to change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No record with this id is yours.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "`{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "installDate": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The day, YYYY-MM-DD, or null to clear it."
+                  },
+                  "ntpGranted": {
+                    "type": "boolean",
+                    "description": "Whether notice to proceed is granted."
+                  }
+                }
+              },
+              "example": {
+                "installDate": "2026-10-14",
+                "ntpGranted": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/stages": {
+      "get": {
+        "operationId": "listStages",
+        "summary": "List stages",
+        "description": "The stages a project can move to, each ladder in its own order: solar's, then HI's. Key your system on `id`, never on the name: renaming a stage in Settings keeps its id, so an automation that sends `stageId` keeps working. Where your company keeps no ladder of its own for a product line, its projects use Pipe's standard one, so the same id can appear under both lines. Only the installer's key reads the ladders.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`data` holds the stages, in ladder order; `position` counts from 1 within each product line.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Stage"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is not valid; the message says what to change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "A dealer's key: only the installer's key reads its ladders.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "productLine",
+            "in": "query",
+            "required": false,
+            "description": "`solar` or `hi`. Both when absent.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/projects/{id}/stage": {
+      "post": {
+        "operationId": "moveProjectStage",
+        "summary": "Move a project's stage",
+        "description": "Moves the project into a stage of its own ladder, as the Move button does: the stage's checklists, alerts and messages follow. Name the stage by `stageId` (from GET /v1/stages, or a project's `stage.id`), which a rename never breaks, or by its name as `stage`; send one, not both. The stage travels in the body, never in the address, so a name needs no encoding. The stage it is already in changes nothing. Only the installer's key moves a project. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`changed` says whether it moved; `stage` is the stage's name and `stageId` its id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StageMoved"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No such stage on this project's ladder, both or neither of `stageId` and `stage`, or not the installer's key; a wrong name lists the ladder's stages.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No record with this id is yours.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "`{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "stageId": {
+                    "type": "string",
+                    "description": "The stage's id, as GET /v1/stages lists it. Preferred: a rename keeps it."
+                  },
+                  "stage": {
+                    "type": "string",
+                    "description": "The stage's name, as the ladder shows it, when you send no `stageId`. Case does not matter."
+                  }
+                }
+              },
+              "example": {
+                "stageId": "s92d\u2026"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{id}/files": {
+      "post": {
+        "operationId": "addProjectFiles",
+        "summary": "Add files to a project",
+        "description": "Copies each file from its address into the project's folder, where the record shows it. Send 1 to 10 at a time. Each address must be public https (no IP address, no private name, no password in it), open the file without signing in, and hold a document, picture, audio or video of 100 MB or less; Pipe keeps its own copy. Sending the same address to the same folder again adds nothing. Only the installer's key adds files. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Every address was already in this folder; nothing was added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilesAdded"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "`files` lists each file with its id; `added` is false for an address this folder already holds, so a retry adds nothing twice.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilesAdded"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is not valid; the message says what to change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No record with this id is yours.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "`{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "folder",
+                  "files"
+                ],
+                "properties": {
+                  "folder": {
+                    "type": "string",
+                    "description": "contract, utilityBill, identification, material, siteSurvey, planset, permit, interconnection, other, homeInsurance, installationPhoto or internal."
+                  },
+                  "files": {
+                    "type": "object",
+                    "description": "A list of { url, name }: a public https address, and the name to show (the address's own when absent)."
+                  }
+                }
+              },
+              "example": {
+                "folder": "permit",
+                "files": [
+                  {
+                    "url": "https://files.example.com/permit-812-main.pdf",
+                    "name": "Permit.pdf"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/leads": {
+      "get": {
+        "operationId": "listLeads",
+        "summary": "List leads",
+        "description": "Your company's leads, solar and HI, newest change first, a page at a time, with `updatedSince` to read only what changed. An installer's key lists every lead sold through it, its dealers' included.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`data` holds the page's leads; `next` is the cursor for the next page, or null at the end.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "next"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Lead"
+                      }
+                    },
+                    "next": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is not valid; the message says what to change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Rows in a page, 1 to 100. 50 when absent.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "The `next` of the page before, URL-encoded, with the same other fields. Absent for the first page.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "updatedSince",
+            "in": "query",
+            "required": false,
+            "description": "Only rows changed after this time, ISO 8601 (2026-10-01T00:00:00Z).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productLine",
+            "in": "query",
+            "required": false,
+            "description": "`solar` or `hi`. Both when absent.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createLead",
+        "summary": "Create a lead",
+        "description": "Sends one homeowner to Pipe as a lead in the key's company. Send the same externalId again and the answer is the lead it already made, so a retried call makes no duplicate.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The externalId was sent before; the answer is that lead.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadCreated"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "The lead was made.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeadCreated"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The body is not valid; the error says why.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "address"
+                ],
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "The homeowner's first name."
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "The homeowner's last name."
+                  },
+                  "address": {
+                    "type": "object",
+                    "description": "line1, city, state and postalCode; line2 and country are optional. state is a US state or Canadian province (TX, ON, or the name); country is US or CA, read from the state when absent."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The homeowner's email."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The homeowner's phone."
+                  },
+                  "salesRepEmail": {
+                    "type": "string",
+                    "description": "An active member of the company. Any other email leaves the rep empty and is listed under unassigned."
+                  },
+                  "setterEmail": {
+                    "type": "string",
+                    "description": "The same rule as salesRepEmail, for the setter."
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "Saved on the lead and posted to its activity."
+                  },
+                  "externalId": {
+                    "type": "string",
+                    "description": "Your system's id, at most 128 characters."
+                  }
+                }
+              },
+              "example": {
+                "firstName": "Ana",
+                "lastName": "Rivera",
+                "address": {
+                  "line1": "812 Main St",
+                  "city": "Plano",
+                  "state": "TX",
+                  "postalCode": "75023"
+                },
+                "externalId": "crm-1042"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/leads/{id}": {
+      "get": {
+        "operationId": "getLead",
+        "summary": "Read a lead",
+        "description": "One lead: the customer, the address, the status, the source, the people and its files by folder. `proposal` is the option the lead leads with (the one the customer chose, else the newest): its system, price, financing and adders, so a lead can be followed before it sells. `project` names the project once the customer bought. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The lead.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No record with this id is yours.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "`{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateLead",
+        "summary": "Change a lead's details",
+        "description": "Changes the customer's details, as the record's edit dialogs do, and the sales rep and setter, as the record's Members window does. An absent field is kept, and null clears an optional one, so a lead read here can be sent back as it is; the answer is the lead as it now reads. A new rep or setter must be an active member of the lead's company, or the call is refused and changes nothing. A rep taken off the lead loses it unless a share still reaches it. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The lead, changed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is not valid; the message says what to change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No record with this id is yours.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "`{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "The customer's first name."
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "The customer's last name."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The customer's email."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The customer's phone."
+                  },
+                  "notes": {
+                    "type": "string",
+                    "description": "The lead's notes; also posted to its activity."
+                  },
+                  "address": {
+                    "type": "object",
+                    "description": "line1, city, state and postalCode together; line2 and country are optional. state is a US state or Canadian province (TX, ON, or the name); country is US or CA, read from the state when absent."
+                  },
+                  "coBorrower": {
+                    "type": "object",
+                    "description": "firstName, lastName, email, phone; an empty text clears that field."
+                  },
+                  "salesRepEmail": {
+                    "type": "string",
+                    "description": "The sales rep, by their sign-in email: an active member of the lead's company. Any other email is refused with `invalid`, naming it. An empty text or null takes the rep off the lead."
+                  },
+                  "setterEmail": {
+                    "type": "string",
+                    "description": "The same rule as salesRepEmail, for the setter."
+                  }
+                }
+              },
+              "example": {
+                "phone": "602-555-0199",
+                "coBorrower": {
+                  "firstName": "Luis",
+                  "lastName": "Rivera"
+                },
+                "salesRepEmail": "jordan@example.com"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/leads/{id}/activities": {
+      "get": {
+        "operationId": "listLeadActivities",
+        "summary": "Read a lead's activity",
+        "description": "The lead's Activity tab, newest first, a page at a time: notes, status and stage changes, files, and the rest. `createdAt` is when the row was first written, and `reference` the old id of a row written before the move to this API (null for a newer row). The pages run in the order Pipe recorded the rows, and rows written before the move were recorded together, so sort by `createdAt` when the exact order matters. `internal` marks a note only the company's admins see. `author` is the writer's name and `authorId` their id, the same id the activity webhook sends; both are null for a row the app wrote, and `authorId` is null for the homeowner. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`data` holds the page's activities; `next` is the cursor for the next page, or null at the end.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data",
+                    "next"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Activity"
+                      }
+                    },
+                    "next": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is not valid; the message says what to change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No record with this id is yours.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "`{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Rows in a page, 1 to 100. 50 when absent.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "The `next` of the page before, URL-encoded, with the same other fields. Absent for the first page.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/v1/adders": {
+      "get": {
+        "operationId": "listAdders",
+        "summary": "List adders and products",
+        "description": "The installer's active adders and HI products, in its own order. For a `perWatt` adder, `unitPrice` is dollars per watt.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`data` holds the adders.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Adder"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "A dealer's key: only the installer's key reads its catalogue.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/equipment": {
+      "get": {
+        "operationId": "listEquipment",
+        "summary": "List panels, inverters and batteries",
+        "description": "The installer's active equipment. `kind` picks one of the three.",
+        "security": [
+          {
+            "companyKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "`data` holds the equipment, each with its `kind`.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Equipment"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request is not valid; the message says what to change.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "A dealer's key: only the installer's key reads its catalogue.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "description": "`panel`, `inverter` or `battery`. All three when absent.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
