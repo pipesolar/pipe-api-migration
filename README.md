@@ -1,6 +1,6 @@
 # Pipe API migration kit
 
-Last updated October 6, 2026.
+Last updated October 7, 2026.
 
 A kit that moves your integration from the old Pipe API
 (`https://pipe.solar/api/1.1/wf/...`) to Pipe API v1 (`https://api.pipe.solar/v1`).

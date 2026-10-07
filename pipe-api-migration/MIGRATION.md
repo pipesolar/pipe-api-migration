@@ -244,12 +244,44 @@ A missing key means no day.
 `share`, `appointment`, `task`, `file`, `price`, `system`, `checklist`. The
 old value was a long label such as "Notes", "Status Change" or "Plansets
 Added". The full sentence is in `body`. **Rows written before Oct 11 carry only
-`note` (any row with note text), `system` or `checklist`,** so code that needs
-the old label for them reads `body`. For rows written from Oct 11, code that
-branches on the old labels maps them, for example: "Notes" to `note`; "Status Change" to `stage` or
-`status`; any "... Added" or "... Uploaded" file label to `file`; "Proposal
-Price Change" to `price`; "New Task Assigned" to `task`; "Appointment Set" to
-`appointment`; "New Member Added" or "Project Assigned" to `assignment`.
+`note` (any row with note text), `system` or `checklist`.** You already hold
+those rows with their old labels from the old call; match them on `reference`
+(below) and keep the label you have.
+
+**The activity webhook still sends the old label.** The activity created event
+(section 4) keeps the old `type` text for every row from Oct 11. To attach that
+label to a v1 row, match the event to the row on three values:
+
+| Webhook `activity` key | v1 field | How they compare |
+| --- | --- | --- |
+| `createdAt` | `createdAt` | The same moment. The webhook cuts it to the second (`2026-10-12T14:03:22Z`); v1 adds milliseconds (`2026-10-12T14:03:22.123Z`). Compare the first 19 characters |
+| `parentOwnerId` | `authorId` | The same id. The webhook sends `""` where v1 sends `null` (no author) |
+| `notes` | `body` | The same text. The webhook sends `null` where `body` is empty |
+
+The event's `pipe_id` is the lead's `reference`. As in the old app, it is
+empty until the lead has a utility account. Every webhook row has a v1 row.
+Not every v1 row has a webhook row: Pipe sends the event only for the kinds of
+row the old app also wrote, so a `share`, a project manager change or a
+milestone date reaches you through v1 only.
+
+**Old labels by v1 `type`.** For a row from Oct 11 that arrives without its
+webhook, this table names the old labels each `type` can stand for; `body`
+decides between them. A label can sit under more than one type ("Status
+Change" is a `stage`, a `status` or a `system` row).
+
+| v1 `type` | Old labels |
+| --- | --- |
+| `note` | "Notes" |
+| `stage` | "Status Change" |
+| `status` | "Status Change", "Project Assigned", "Site Survey Scheduled" |
+| `assignment` | "Sales Rep Changed", "Assigned Members", "Subcontractor Added", "Site Surveyor Added" |
+| `appointment` | "Install Event Created", "Install Event Modified", "Appointment Time Changed" |
+| `task` | "New Task Assigned" |
+| `file` | "Utility Bill Added", "Insurance Document Added", "Personal Files Added", "New Contract Uploaded", "Other Documents Added", "Site Survey Photos Added", "Welcome Call Uploaded", "Upgrades and Adders Added", "Permit Documents Added", "Installation Photos Added", "File Deleted", "New Additional Contract Uploaded" |
+| `price` | "Proposal Price Change" |
+| `checklist` | "Proposal Verification Checklist Confirmed", "Proposal Verification Checklist Skipped" |
+| `system` | "Plan Set Request Initiated", "Plan Sets Submitted For Review", "Plan Set Request Completed", "CAD Request Cancelled", "Plan Set Revision Request", "CAD Drawing Approved", "Plansets Added", "New Service Request Logged", "Lead Created", "Personal Contact Changed", "Address Changed", "HOA Details Added", "Utility Provider & Rate Selected", "Consumption Entered", "Proposal Created", "Shared Proposal Email", "Shared Proposal SMS", "External Project Added", "Modified Project Data", "Changed Adders", "Adder Added", "Adder Removed", "Tags Updated", "Design Requested", "Design Request Completed", "Self Design Created", "Design Approved", "Design Request System Consideration Notes", "Design Request Internal Design Notes", "Design Revision Request", "Pending Sales Review Created", "Pending Review Re-Submitted", "Pending Sales Review Reset", "Document Review Approved", "Sales Review Approved", "Pending Sales Rejection Notes", "Setter Review Re-Submitted", "Setter Review Approved", "Setter Review Created", "Set Review Revision Notes", "Utility Review Approved", "Status Change", "Change Order Review Created", "Contract Signed (Manual)", "LightReach Contract Signed", "Contract Signed", "LightReach Contract Voided", "Credit Application Status", "Appointment Disposition Changed", "Permit Info Added", "Roof Quote Requested", "Checklist Completed", "Checklist Undo Completion", "Sent SMS (Stage Alert)" |
+| `share` | (none; the old app wrote no such row) |
 
 ### 3.5 Upload files: `project_upload_file` to `POST /v1/projects/{id}/files`
 
@@ -352,7 +384,7 @@ Check these five things in the code that reads them:
 | `submittedDate` | The old value was always the day of the call |
 | `roofPitch` | Always an empty list |
 | Home Improvement lead UID | Not kept: read the new id from `GET /v1/leads?productLine=hi` |
-| Old activity labels on rows written before Oct 11 | Only `note`, `system` or `checklist`; the sentence is in `body` |
+| Old activity labels on rows written before Oct 11 | Only `note`, `system` or `checklist`; you hold the labels from the old call, matched on `reference` (3.4) |
 | Old reply flag on rows written before Oct 11 | Not kept: such replies read `replyTo: null` |
 | `numberOfArrays` on the project | Always empty; use the lead's `proposal.system.arrays` |
 | `installer_id` parameter | The key names your company |
