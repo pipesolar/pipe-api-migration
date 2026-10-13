@@ -4,11 +4,11 @@
   "info": {
     "title": "Pipe Solar API",
     "version": "v1",
-    "description": "Every call sends a company key, made by an owner or admin in Settings \u2192 API Keys, as Authorization: Bearer psk_\u2026. Call from a server, never from a web page. Documentation: https://developers.pipe.solar"
+    "description": "Every call sends a company key, made by an owner or admin in Settings → API Keys, as Authorization: Bearer psk_…. Call from a server, never from a web page. Documentation: https://developers.pipe.solar"
   },
   "servers": [
     {
-      "url": "https://staging-api.pipe.solar"
+      "url": "https://api.pipe.solar"
     }
   ],
   "components": {
@@ -1122,7 +1122,7 @@
           },
           "customFields": {
             "type": "object",
-            "description": "The company's own fields on the project (Settings \u2192 Company fields), by the field's name: text, a number, a YYYY-MM-DD date, a choice, or true and false. A field with no value is left out.",
+            "description": "The company's own fields on the project (Settings → Company fields), by the field's name: text, a number, a YYYY-MM-DD date, a choice, or true and false. A field with no value is left out.",
             "additionalProperties": {
               "oneOf": [
                 {
@@ -2339,8 +2339,18 @@
               }
             }
           },
+          "403": {
+            "description": "`not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -2348,6 +2358,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2418,8 +2438,18 @@
               }
             }
           },
+          "403": {
+            "description": "`not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -2427,6 +2457,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2443,7 +2483,7 @@
             "required": false,
             "description": "Rows in a page, 1 to 100. 50 when absent.",
             "schema": {
-              "type": "number"
+              "type": "integer"
             }
           },
           {
@@ -2507,6 +2547,16 @@
               }
             }
           },
+          "403": {
+            "description": "`not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "404": {
             "description": "No record with this id is yours.",
             "content": {
@@ -2518,7 +2568,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -2526,6 +2576,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2587,6 +2647,16 @@
               }
             }
           },
+          "403": {
+            "description": "A dealer's key: only the installer's key changes a project. Or `not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "404": {
             "description": "No record with this id is yours.",
             "content": {
@@ -2598,7 +2668,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -2606,6 +2676,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2709,7 +2789,7 @@
             }
           },
           "403": {
-            "description": "A dealer's key: only the installer's key reads its ladders.",
+            "description": "A dealer's key: only the installer's key reads its ladders. Or `not_open`: the address is not open on this deployment yet.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2719,7 +2799,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -2727,6 +2807,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2771,7 +2861,7 @@
             }
           },
           "400": {
-            "description": "No such stage on this project's ladder, both or neither of `stageId` and `stage`, or not the installer's key; a wrong name lists the ladder's stages.",
+            "description": "No such stage on this project's ladder, or both or neither of `stageId` and `stage`; a wrong name lists the ladder's stages.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2782,6 +2872,16 @@
           },
           "401": {
             "description": "The key is missing, wrong or revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "A dealer's key: only the installer's key changes a project. Or `not_open`: the address is not open on this deployment yet.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2801,7 +2901,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -2809,6 +2909,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2848,7 +2958,7 @@
                 }
               },
               "example": {
-                "stageId": "s92d\u2026"
+                "stageId": "s92d…"
               }
             }
           }
@@ -2906,6 +3016,16 @@
               }
             }
           },
+          "403": {
+            "description": "A dealer's key: only the installer's key changes a project. Or `not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "404": {
             "description": "No record with this id is yours.",
             "content": {
@@ -2917,7 +3037,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -2925,6 +3045,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -2961,8 +3091,27 @@
                     "description": "contract, utilityBill, identification, material, siteSurvey, planset, permit, interconnection, other, homeInsurance, installationPhoto or internal."
                   },
                   "files": {
-                    "type": "object",
-                    "description": "A list of { url, name }: a public https address, and the name to show (the address's own when absent)."
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "url"
+                      ],
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "A public https address that opens the file without signing in."
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "The name to show; the address's own when absent."
+                        }
+                      }
+                    },
+                    "description": "1 to 10 of { url, name }: a public https address, and the name to show (the address's own when absent)."
                   }
                 }
               },
@@ -3039,8 +3188,18 @@
               }
             }
           },
+          "403": {
+            "description": "`not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -3048,6 +3207,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3064,7 +3233,7 @@
             "required": false,
             "description": "Rows in a page, 1 to 100. 50 when absent.",
             "schema": {
-              "type": "number"
+              "type": "integer"
             }
           },
           {
@@ -3146,8 +3315,18 @@
               }
             }
           },
+          "403": {
+            "description": "`not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -3155,6 +3334,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3186,6 +3375,38 @@
                   },
                   "address": {
                     "type": "object",
+                    "required": [
+                      "line1",
+                      "city",
+                      "state",
+                      "postalCode"
+                    ],
+                    "properties": {
+                      "line1": {
+                        "type": "string"
+                      },
+                      "line2": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "A US state or Canadian province, as its code (TX, ON) or its name."
+                      },
+                      "postalCode": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string",
+                        "enum": [
+                          "US",
+                          "CA"
+                        ],
+                        "description": "Read from `state` when absent."
+                      }
+                    },
                     "description": "line1, city, state and postalCode; line2 and country are optional. state is a US state or Canadian province (TX, ON, or the name); country is US or CA, read from the state when absent."
                   },
                   "email": {
@@ -3198,7 +3419,7 @@
                   },
                   "salesRepEmail": {
                     "type": "string",
-                    "description": "An active member of the company. Any other email leaves the rep empty and is listed under unassigned."
+                    "description": "An active owner, admin, manager, rep or setter of the company. Any other email, a field person's included, leaves the rep empty and is listed under unassigned."
                   },
                   "setterEmail": {
                     "type": "string",
@@ -3234,7 +3455,7 @@
       "get": {
         "operationId": "getLead",
         "summary": "Read a lead",
-        "description": "One lead: the customer, the address, the status, the source, the people and its files by folder. `proposal` is the option the lead leads with (the one the customer chose, else the newest): its system, price, financing and adders, so a lead can be followed before it sells. `project` names the project once the customer bought. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "description": "One lead: the customer, the address, the status, the source, the people and its files by folder. `proposal` is the option the lead leads with (the one the customer signed, else the newest still offered): its system, price, financing and adders, so a lead can be followed before it sells. Its `status` reads `signed` once the customer signs; `accepted` appears only on options chosen before 2026-10-07, when the app stopped setting it. `project` names the project once the customer bought. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
         "security": [
           {
             "companyKey": []
@@ -3261,6 +3482,16 @@
               }
             }
           },
+          "403": {
+            "description": "`not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "404": {
             "description": "No record with this id is yours.",
             "content": {
@@ -3272,7 +3503,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -3280,6 +3511,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3304,7 +3545,7 @@
       "patch": {
         "operationId": "updateLead",
         "summary": "Change a lead's details",
-        "description": "Changes the customer's details, as the record's edit dialogs do, and the sales rep and setter, as the record's Members window does. An absent field is kept, and null clears an optional one, so a lead read here can be sent back as it is; the answer is the lead as it now reads. A new rep or setter must be an active member of the lead's company, or the call is refused and changes nothing. A rep taken off the lead loses it unless a share still reaches it. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
+        "description": "Changes the customer's details, as the record's edit dialogs do, and the sales rep and setter, as the record's Members window does. Send only the fields you change, from the list below: an absent field is kept, null clears an optional one, and a field the list does not name (such as `id`, `status` or `salesRep` from a read) is refused with `invalid`. The answer is the lead as it now reads. A new rep or setter must be an active member of the lead's company, or the call is refused and changes nothing. A rep taken off the lead loses it unless a share still reaches it. `{id}` is Pipe's id, or the reference your system holds from the old app: the 10-character UID of the customer or the project, or the old app's own id of either. A project also answers to its lead's id.",
         "security": [
           {
             "companyKey": []
@@ -3341,6 +3582,16 @@
               }
             }
           },
+          "403": {
+            "description": "`not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "404": {
             "description": "No record with this id is yours.",
             "content": {
@@ -3352,7 +3603,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -3360,6 +3611,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3397,31 +3658,99 @@
                     "description": "The customer's last name."
                   },
                   "email": {
-                    "type": "string",
-                    "description": "The customer's email."
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The customer's email; null clears it."
                   },
                   "phone": {
-                    "type": "string",
-                    "description": "The customer's phone."
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The customer's phone; null clears it."
                   },
                   "notes": {
-                    "type": "string",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
                     "description": "The lead's notes; also posted to its activity."
                   },
                   "address": {
                     "type": "object",
+                    "required": [
+                      "line1",
+                      "city",
+                      "state",
+                      "postalCode"
+                    ],
+                    "properties": {
+                      "line1": {
+                        "type": "string"
+                      },
+                      "line2": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string",
+                        "description": "A US state or Canadian province, as its code (TX, ON) or its name."
+                      },
+                      "postalCode": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string",
+                        "enum": [
+                          "US",
+                          "CA"
+                        ],
+                        "description": "Read from `state` when absent."
+                      }
+                    },
                     "description": "line1, city, state and postalCode together; line2 and country are optional. state is a US state or Canadian province (TX, ON, or the name); country is US or CA, read from the state when absent."
                   },
                   "coBorrower": {
-                    "type": "object",
-                    "description": "firstName, lastName, email, phone; an empty text clears that field."
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "firstName": {
+                            "type": "string"
+                          },
+                          "lastName": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "phone": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "description": "firstName, lastName, email, phone; an empty text clears that field, and null clears the co-borrower."
                   },
                   "salesRepEmail": {
-                    "type": "string",
-                    "description": "The sales rep, by their sign-in email: an active member of the lead's company. Any other email is refused with `invalid`, naming it. An empty text or null takes the rep off the lead."
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "description": "The sales rep, by their sign-in email: an active owner, admin, manager, rep or setter of the lead's company. Any other email, a field person's included, is refused with `invalid`, naming it. An empty text or null takes the rep off the lead."
                   },
                   "setterEmail": {
-                    "type": "string",
+                    "type": [
+                      "string",
+                      "null"
+                    ],
                     "description": "The same rule as salesRepEmail, for the setter."
                   }
                 }
@@ -3498,6 +3827,16 @@
               }
             }
           },
+          "403": {
+            "description": "`not_open`: the address is not open on this deployment yet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "404": {
             "description": "No record with this id is yours.",
             "content": {
@@ -3509,7 +3848,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -3517,6 +3856,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3542,7 +3891,7 @@
             "required": false,
             "description": "Rows in a page, 1 to 100. 50 when absent.",
             "schema": {
-              "type": "number"
+              "type": "integer"
             }
           },
           {
@@ -3600,7 +3949,7 @@
             }
           },
           "403": {
-            "description": "A dealer's key: only the installer's key reads its catalogue.",
+            "description": "A dealer's key: only the installer's key reads its catalogue. Or `not_open`: the address is not open on this deployment yet.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3610,7 +3959,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -3618,6 +3967,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3682,7 +4041,7 @@
             }
           },
           "403": {
-            "description": "A dealer's key: only the installer's key reads its catalogue.",
+            "description": "A dealer's key: only the installer's key reads its catalogue. Or `not_open`: the address is not open on this deployment yet.",
             "content": {
               "application/json": {
                 "schema": {
@@ -3692,7 +4051,7 @@
             }
           },
           "429": {
-            "description": "More than 100 calls in a minute from this key; wait the seconds `Retry-After` names.",
+            "description": "More than 100 calls in a minute from this key, or the record was busy with another call; wait the seconds `Retry-After` names.",
             "headers": {
               "Retry-After": {
                 "schema": {
@@ -3700,6 +4059,16 @@
                 }
               }
             },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pipe's side failed; retry after a short wait, and send Pipe the answer's X-Request-Id if it repeats.",
             "content": {
               "application/json": {
                 "schema": {

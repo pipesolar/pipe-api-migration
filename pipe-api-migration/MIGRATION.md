@@ -6,11 +6,15 @@ Firefly Solar's systems made in the last 45 days, plus `update-lead-assignment`:
 every parameter, and every field of every answer. It was read from the old API's own definitions and from the v1
 specification on 2026-10-06.
 
-`openapi.json` next to this file is the v1 specification. The live copy is at
-`https://staging-api.pipe.solar/v1/openapi.json`, and the guide is at
-`https://developers.pipe.solar`.
+`openapi.json` next to this file is a copy of the v1 specification from
+October 13, 2026. The live one, always current, is at
+`https://api.pipe.solar/openapi.json`, and the guide is at
+`https://developers.pipe.solar`. When the two differ, the live one is right.
 
 ## 1. Dates (all times Eastern; Edmonton is two hours earlier)
+
+v1 has been live since October 11, 10 AM ET, and the old API is closed. The
+table is the record of the move.
 
 | When | What happens |
 | --- | --- |
