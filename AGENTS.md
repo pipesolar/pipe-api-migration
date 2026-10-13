@@ -19,6 +19,6 @@ Rules that always hold:
 3. Never print customer data.
 4. Write `PIPE_MIGRATION_REPORT.md` before you change code, and stop for the
    user's review unless they said not to.
-5. Keep the old path behind a switch until the cutover; work on a new branch;
-   never merge or deploy.
+5. Move each call straight to v1 (the old API is closed and answers 410);
+   work on a new branch; never merge or deploy.
 6. Do not guess a mapping that `MIGRATION.md` does not give.

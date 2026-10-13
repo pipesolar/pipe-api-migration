@@ -18,8 +18,8 @@ The rules that matter most:
 1. Find every old call, every reader of an old answer, and every handler of
    Pipe's webhooks. Write `PIPE_MIGRATION_REPORT.md` in this repository first,
    and stop for my review before you change code.
-2. Put the v1 path behind one switch (`old` or `v1`) and keep the old path,
-   so we flip it at 10 AM ET on October 11 without a deploy.
+2. Move every call to v1. The old API closed on October 11 and answers 410,
+   so there is no old path to keep.
 3. Never call production. Test only against the sandbox,
    `https://staging-api.pipe.solar/v1`, with the key in `PIPE_API_KEY`.
 4. Never write a key into code, tests, commits, logs or your replies. Never

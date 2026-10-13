@@ -1,6 +1,6 @@
 # Pipe API migration kit
 
-Last updated October 7, 2026.
+Last updated October 13, 2026.
 
 A kit that moves your integration from the old Pipe API
 (`https://pipe.solar/api/1.1/wf/...`) to Pipe API v1 (`https://api.pipe.solar/v1`).
@@ -8,13 +8,14 @@ It works with any AI coding tool: Codex, Cursor, Grok Build, GitHub Copilot,
 Gemini CLI, Windsurf and others. An engineer can also follow it
 by hand.
 
-## The dates (Eastern Time; Edmonton is two hours earlier)
+## Where things stand
 
-- **Now to October 10:** build and test against the sandbox,
-  `https://staging-api.pipe.solar/v1`, with your sandbox key.
-- **October 11, about 3:30 AM ET:** the old API stops: `https://pipe.solar/api/1.1/...`
-  answers HTTP 410. Move any call that uses another host name before then.
-- **October 11, 10 AM ET:** v1 opens on production with your live key.
+- **Since October 11, 10 AM ET:** v1 is live on production,
+  `https://api.pipe.solar/v1`, with your live key.
+- **The old API is closed:** `https://pipe.solar/api/1.1/...` answers HTTP 410.
+  A call that still uses it reaches nothing; move it to v1.
+- **The sandbox stays open:** build and test against
+  `https://staging-api.pipe.solar/v1` with your sandbox key before you ship.
 
 ## What the kit does in your codebase
 
@@ -23,7 +24,7 @@ by hand.
 2. **Reports first.** It writes `PIPE_MIGRATION_REPORT.md`: each call site by
    file and line, its v1 replacement, the behaviour traps it hits, and
    anything it cannot map. It stops there until you say go.
-3. **Changes the code** behind one switch (`old` or `v1`), with one v1 client
+3. **Changes the code** to v1, with one v1 client
    (key, retries on 429, real HTTP errors) and one adapter that turns v1
    answers into the shape your code already reads.
 4. **Proves it on the sandbox**, never on production, and says what it did
@@ -39,7 +40,7 @@ It never writes a key into code, never calls production and never deploys.
 | `AGENTS.md` | The same instructions, read automatically by most tools when you open this kit's own repository |
 | `pipe-api-migration/SKILL.md` | The step-by-step procedure (any tool can read it) |
 | `pipe-api-migration/MIGRATION.md` | The full map: every old call, parameter and field, and its v1 equivalent |
-| `pipe-api-migration/openapi.json` | The v1 specification (live copy: `https://staging-api.pipe.solar/v1/openapi.json`) |
+| `pipe-api-migration/openapi.json` | A copy of the v1 specification from October 13; the live one, always current, is `https://api.pipe.solar/openapi.json` |
 | `pipe-api-migration/sandbox-check.mjs` | A test of your key and each call against the sandbox (Node 18+, no packages) |
 
 ## How to use it

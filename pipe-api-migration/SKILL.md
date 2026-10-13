@@ -1,15 +1,15 @@
 ---
 name: pipe-api-migration
-description: Move a codebase from the old Pipe API (pipe.solar/api/1.1/wf/...) to Pipe API v1 (api.pipe.solar/v1). Finds every old call and every webhook handler, writes a report first, then changes the code behind one switch and proves it on the Pipe sandbox. Use when asked to migrate, update or check a Pipe integration.
+description: Move a codebase from the old Pipe API (pipe.solar/api/1.1/wf/...) to Pipe API v1 (api.pipe.solar/v1). Finds every old call and every webhook handler, writes a report first, then changes the code to v1 and proves it on the Pipe sandbox. Use when asked to migrate, update or check a Pipe integration.
 ---
 
 # Move a codebase to Pipe API v1
 
 You are working in the user's own codebase, which Pipe has never seen. Your
 job: find every place it talks to the old Pipe API or receives Pipe's
-webhooks, change it to Pipe API v1, and prove it on the sandbox. The deadline
-is fixed: the old API stops at about 3:30 AM ET on October 11, 2026, and v1 opens on
-production at 10 AM ET the same day.
+webhooks, change it to Pipe API v1, and prove it on the sandbox. The old API
+closed at about 3:30 AM ET on October 11, 2026, and answers 410; v1 has been
+live on production since 10 AM ET that day.
 
 Read `MIGRATION.md` in this folder before you change anything. It maps every
 old call, parameter and field to v1. `openapi.json` is the v1 specification.
@@ -28,9 +28,8 @@ old call, parameter and field to v1. `openapi.json` is the v1 specification.
    its value.
 3. **Never print customer data.** When you call the sandbox, print status
    codes, ids and counts, not names, emails, phones or addresses.
-4. **Keep the old path until the switch.** Do not delete the old calls. Put
-   the new calls behind one setting, so the team flips it at 10 AM ET on
-   October 11 without a deploy, and can flip back.
+4. **Move straight to v1.** The old API is closed, so an old call reaches
+   nothing. Replace it; keep no switch back to it.
 5. **Work on a new branch.** Do not merge, deploy or release. The team does
    that.
 6. **Say what you did not prove.** Every "works" in your report names what
@@ -46,7 +45,7 @@ Old calls:
 
 - `api/1.1/` (any host; this catches every old call, including `api/1.1/obj/`
   data reads). Report each host name you find. Only `pipe.solar` answers 410
-  after the switch; a call to any other host keeps "working" while what it
+  since October 11; a call to any other host keeps "working" while what it
   writes is lost, so flag it as a must-fix.
 - `version-test/api` (the old test address)
 - The old endpoint names: `fetch_lead`, `fetch_project`, `update_stage`,
@@ -127,9 +126,9 @@ say so, unless they told you up front to continue without a stop.
      retry, at most 3 times; retry nothing else automatically;
    - on any other status of 400 or more, raise an error that carries the
      status and `error.code` and `error.message` from the body.
-2. **One switch.** A setting such as `PIPE_API_VERSION=old|v1` chooses the old
-   path or the v1 path at each call site. Default it to `old` on production
-   and `v1` on test environments.
+2. **One base address.** Read the v1 base URL from configuration
+   (`https://api.pipe.solar/v1`, or the sandbox's on test environments). The
+   old API is closed, so keep no path back to it.
 3. **Translate in one place.** Prefer an adapter that turns each v1 answer
    into the shape the rest of the code already reads, using the tables in
    `MIGRATION.md`. That keeps the change small and the old downstream code
@@ -169,8 +168,7 @@ say so, unless they told you up front to continue without a stop.
    `pipe-api-migration/`, or wherever the user copied it). It reads
    only, unless the user asks for `--write`. It refuses the production
    address. Fix what fails.
-3. Run the codebase's own integration against the sandbox with the switch on
-   `v1`: one read of each kind, then, only if the user agrees, one stage move
+3. Run the codebase's own integration against the sandbox: one read of each kind, then, only if the user agrees, one stage move
    and one upload on a sandbox project. The sandbox holds made-up records with
    new ids; take ids from `GET /v1/leads` and `GET /v1/projects`.
 4. Ask the team for a test address for webhooks if the receiver has not been
@@ -180,11 +178,9 @@ say so, unless they told you up front to continue without a stop.
 
 Update `PIPE_MIGRATION_REPORT.md` with what changed (a nested list: file,
 then function, then change), the test results with their summary lines, what
-was proved on the sandbox, and what was not. End with the switch-day steps:
+was proved on the sandbox, and what was not. End with the ship steps:
 
-1. Before Oct 11: deploy with the switch on `old` and the live key in the
-   secret store.
-2. Oct 11, about 3:30 AM ET: the old API answers 410. Hold or queue writes.
-3. Oct 11, 10 AM ET: set the switch to `v1`. Run one read and watch the
-   error logs for 15 minutes.
-4. Afterwards: remove the old path in a later change.
+1. Put the live key in the secret store.
+2. Deploy the v1 change. Run one read on production and watch the error
+   logs for 15 minutes.
+3. Any call still answering 410 is an old call the report missed: move it.
